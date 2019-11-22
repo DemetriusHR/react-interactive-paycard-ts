@@ -22,11 +22,11 @@ const Form: React.FC<IFormProps> = React.memo(
       cardNumber: "",
       cardYear: "",
       cursorIdx: 0,
-      monthsArr: Array.from(new Array(12), (x, i) => {
+      monthsArr: Array.from(new Array(12), (_, i) => {
         const month = i + 1;
         return month <= 9 ? "0" + month : month;
       }),
-      yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
+      yearsArr: Array.from(new Array(9), (_, i) => currentYear + i)
     });
     const [prevState, setPrevState] = React.useState(state);
 
@@ -62,7 +62,7 @@ const Form: React.FC<IFormProps> = React.memo(
         setState(prev => {
           setPrevState(prev);
 
-          return { ...prev, [name]: cardNumber.trimRight() };
+          return { ...prev, cardNumber: cardNumber.trimRight() };
         });
         updateMainState(name, cardNumber);
       },
@@ -109,13 +109,10 @@ const Form: React.FC<IFormProps> = React.memo(
       const node = cardNumberRef.current;
       const { cardNumber: cardNum } = state;
       const { cardNumber: prevCardNum } = prevState;
-      if (cardNum.length > prevCardNum.length) {
-        setState(prev => {
-          setPrevState(prev);
-
-          return { ...prev, cursorIdx: prevState.cursorIdx + 1 };
-        });
-      } else if (prevCardNum[state.cursorIdx - 1] === " ") {
+      if (
+        cardNum.length > prevCardNum.length ||
+        cardNum[state.cursorIdx - 1] === " "
+      ) {
         setState(prev => {
           setPrevState(prev);
 
