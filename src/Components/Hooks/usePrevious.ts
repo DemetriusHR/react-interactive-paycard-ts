@@ -1,7 +1,11 @@
 import * as React from "react";
 
-function usePrevious(value: { currentFocusedElm: HTMLElement }) {
-    const ref = React.useRef<{ currentFocusedElm: HTMLElement }>();
+interface IUsePrevious {
+    currentFocusedElm?: HTMLElement;
+}
+
+function usePrevious(value: IUsePrevious) {
+    const ref = React.useRef<IUsePrevious>();
     React.useEffect(() => {
         ref.current = value;
     });

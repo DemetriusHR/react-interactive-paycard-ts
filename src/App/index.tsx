@@ -18,13 +18,13 @@ const initialState = {
   cardYear: defaultCardYear,
   code: {
     name: "CVC",
-    size: 3
+    size: 3,
+    type: ""
   },
   currentFocusedElm: null,
   isCardFlipped: false
 };
 
-// This are the references for the Card DIV elements
 const cardElementsRef = {
   cardDate: null,
   cardHolder: null,
@@ -34,7 +34,6 @@ const cardElementsRef = {
 const MainScreen = () => {
   const [state, setState] = React.useState(initialState);
 
-  // References for the Form Inputs
   const formFieldsRefObj = {
     cardCvv: React.useRef(),
     cardDate: React.useRef(),
@@ -73,7 +72,7 @@ const MainScreen = () => {
     }));
   }, []);
 
-  const onSetCode = React.useCallback((code: { name: ""; size: 0 }) => {
+  const onSetCode = React.useCallback((code: { name: ""; size: 0; type: "" }) => {
     setState(prevState => ({
       ...prevState,
       code

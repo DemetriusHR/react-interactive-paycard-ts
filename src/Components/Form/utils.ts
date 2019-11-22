@@ -1,12 +1,12 @@
-function NumberCardTest(value: string) {
+function NumberCardTest(value: string, code: { type: string }) {
     let cardNumber = value;
     const valueChanged = value.replace(/\D/g, "");
 
-    if (/^3[47]\d{0,13}$/.test(valueChanged)) {
+    if (code.type === "american-express") {
         cardNumber = valueChanged
             .replace(/(\d{4})/, "$1 ")
             .replace(/(\d{4}) (\d{6})/, "$1 $2 ");
-    } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(valueChanged)) {
+    } else if (code.type === "diners-club") {
         // diner's club, 14 digits
         cardNumber = valueChanged
             .replace(/(\d{4})/, "$1 ")

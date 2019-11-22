@@ -5,7 +5,7 @@ import NumberCardTest from "./utils";
 
 const currentYear = new Date().getFullYear();
 
-const Form: React.StatelessComponent<IFormProps> = React.memo(
+const Form: React.FC<IFormProps> = React.memo(
   ({
     onUpdateStateValue,
     cardNumberRef,
@@ -16,7 +16,7 @@ const Form: React.StatelessComponent<IFormProps> = React.memo(
     onCardInputBlur,
     code,
     children
-  }: IFormProps) => {
+  }) => {
     const [state, setState] = React.useState({
       cardMonth: "",
       cardNumber: "",
@@ -57,7 +57,7 @@ const Form: React.StatelessComponent<IFormProps> = React.memo(
     const onCardNumberChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
-        const cardNumber = NumberCardTest(value);
+        const cardNumber = NumberCardTest(value, code);
 
         setState(prevState => {
           setPrevState(prevState);
@@ -66,7 +66,7 @@ const Form: React.StatelessComponent<IFormProps> = React.memo(
         });
         updateMainState(name, cardNumber);
       },
-      [updateMainState]
+      [updateMainState, code]
     );
 
     const onCvvFocus = React.useCallback(() => {
@@ -126,6 +126,14 @@ const Form: React.StatelessComponent<IFormProps> = React.memo(
       node.selectionStart = node.selectionEnd = state.cursorIdx;
     }, [state, prevStated, cardNumberRef]);
 
+    const maxLengthInput = React.useMemo(() => {
+      if (code.type === "american-express" || code.type === "diners-club") {
+        return 18;
+      }
+
+      return 19;
+    }, [code.type]);
+
     return (
       <FormWrapper>
         <div className="card-list">{children}</div>
@@ -140,7 +148,7 @@ const Form: React.StatelessComponent<IFormProps> = React.memo(
               className="card-input__input"
               autoComplete="off"
               onChange={onCardNumberChange}
-              maxLength={19}
+              maxLength={maxLengthInput}
               ref={cardNumberRef}
               onFocus={onFocusInputNumber}
               onBlur={onCardInputBlur}

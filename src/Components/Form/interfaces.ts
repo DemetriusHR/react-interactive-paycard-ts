@@ -16,6 +16,5 @@ export interface IFormProps {
     cardCvvRef?: React.MutableRefObject<HTMLInputElement>;
     onCardInputFocus?: (arg1: any, arg2: any) => void;
     onCardInputBlur?: () => void;
-    code: { name: string; size: number };
-    children?: React.ReactNode;
+    code: { name: string; size: number; type: string };
 }

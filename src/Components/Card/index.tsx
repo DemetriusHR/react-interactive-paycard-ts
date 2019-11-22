@@ -16,7 +16,7 @@ import {
   mapToNumeric
 } from "./utils";
 
-const Card = React.memo(
+const Card: React.FC<ICardProps> = React.memo(
   ({
     cardHolder,
     cardNumber,
@@ -30,7 +30,7 @@ const Card = React.memo(
     cardHolderRef,
     setCode,
     cardDateRef
-  }: ICardProps) => {
+  }) => {
     const prevProps = usePrevious({ currentFocusedElm });
     const [state, setState] = React.useState({
       backgroundImgname: cardBackgroundName(),
@@ -45,7 +45,7 @@ const Card = React.memo(
 
       if (flagCard) {
         if (setCode) {
-          setCode(flagCard.code);
+          setCode({ ...flagCard.code, type: flagCard.type });
         }
 
         setStateCode(flagCard.code);
@@ -74,7 +74,6 @@ const Card = React.memo(
       const currentFocusedElmPrev = prevProps
         ? prevProps.currentFocusedElm
         : null;
-
       if (currentFocusedElm && currentFocusedElm !== currentFocusedElmPrev) {
         const style = outlineElementStyle(currentFocusedElm);
         setState(prevState => ({ ...prevState, style }));

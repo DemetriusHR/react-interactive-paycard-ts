@@ -2,6 +2,8 @@
 
 Inspired from this project [react-interactive-paycard](https://github.com/jasminmif/react-interactive-paycard), I decided to recreate the same on Typescript as a part time fun project for study of the Typescript.
 
+I also wrote a copy of the script in [CodeSandBox][https://codesandbox.io/s/react-interactive-paycard-in-ts-os5xs].
+
 ![](demo.gif)
 
 ## Available Scripts
