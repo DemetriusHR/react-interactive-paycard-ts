@@ -28,7 +28,7 @@ const Card: React.FC<ICardProps> = React.memo(
     cardNumberRef,
     onCardElementClick,
     cardHolderRef,
-    setCode,
+    setCardConfig,
     cardDateRef
   }) => {
     const prevProps = usePrevious({ currentFocusedElm });
@@ -44,8 +44,11 @@ const Card: React.FC<ICardProps> = React.memo(
       let flagCard = creditCardType(numberCard)[0];
 
       if (flagCard) {
-        if (setCode) {
-          setCode({ ...flagCard.code, type: flagCard.type });
+        const maxLength = flagCard.lengths
+          ? flagCard.lengths[flagCard.lengths.length - 1]
+          : 19;
+        if (setCardConfig) {
+          setCardConfig({ ...flagCard.code, type: flagCard.type, maxLength });
         }
 
         setStateCode(flagCard.code);
@@ -53,10 +56,10 @@ const Card: React.FC<ICardProps> = React.memo(
       }
 
       flagCard = creditCardType("")[0];
-      setCode(flagCard.code);
+      setCardConfig(flagCard.code);
 
-      return flagCard.type;
-    }, [cardNumber, setCode]);
+      return "not-flag";
+    }, [cardNumber, setCardConfig]);
 
     const outlineElementStyle = React.useCallback(
       (element: HTMLElement) =>
@@ -84,7 +87,7 @@ const Card: React.FC<ICardProps> = React.memo(
       const cardNumberSplit = cardNumberEntrance.split("");
 
       cardNumberSplit.forEach((_, index) => {
-        if (index > 4 && index < 14) {
+        if (index > 4 && index < cardNumberSplit.length - 4) {
           if (cardNumberSplit[index] !== " ") {
             cardNumberSplit[index] = "*";
           }

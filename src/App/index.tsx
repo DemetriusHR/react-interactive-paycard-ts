@@ -11,16 +11,17 @@ const defaultCardYear = "";
 const defaultCardCvv = "";
 
 const initialState = {
+  cardConfig: {
+    maxLength: 19,
+    name: "CVC",
+    size: 3,
+    type: ""
+  },
   cardCvv: defaultCardCvv,
   cardHolder: defaultCardHolderName,
   cardMonth: defaultCardMonth,
   cardNumber: defaultCardNo,
   cardYear: defaultCardYear,
-  code: {
-    name: "CVC",
-    size: 3,
-    type: ""
-  },
   currentFocusedElm: null,
   isCardFlipped: false
 };
@@ -72,12 +73,15 @@ const MainScreen = () => {
     }));
   }, []);
 
-  const onSetCode = React.useCallback((code: { name: ""; size: 0; type: "" }) => {
-    setState(prevState => ({
-      ...prevState,
-      code
-    }));
-  }, []);
+  const onSetCardConfig = React.useCallback(
+    (cardConfig: { name: ""; size: 0; type: ""; maxLength: 19 }) => {
+      setState(prevState => ({
+        ...prevState,
+        cardConfig
+      }));
+    },
+    []
+  );
 
   const cardNumberRef = React.useCallback((node: any) => {
     return (cardElementsRef.cardNumber = node);
@@ -100,7 +104,7 @@ const MainScreen = () => {
         onCardInputBlur={onCardInputBlur}
         onCardInputFocus={onCardFormInputFocus}
         onUpdateStateValue={updateStateValue}
-        code={state.code}
+        cardConfig={state.cardConfig}
       >
         <Card
           cardNumber={state.cardNumber}
@@ -114,7 +118,7 @@ const MainScreen = () => {
           cardNumberRef={cardNumberRef}
           cardHolderRef={cardHolderRef}
           cardDateRef={cardDateRef}
-          setCode={onSetCode}
+          setCardConfig={onSetCardConfig}
         />
       </Form>
     </AppWrapper>

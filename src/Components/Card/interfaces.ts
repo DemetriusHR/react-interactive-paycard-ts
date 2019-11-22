@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export interface ICardProps {
     cardHolder?: string;
     cardNumber?: string;
@@ -12,7 +10,7 @@ export interface ICardProps {
     cardNumberRef?: (node: any) => any;
     cardHolderRef?: (node: any) => any;
     cardDateRef?: (node: any) => any;
-    setCode?: (arg1: { name: string; size: number }) => void;
+    setCardConfig?: (arg1: { name: string; size: number; type: string; maxLength: number }) => void;
 }
 
 export interface ICardState {

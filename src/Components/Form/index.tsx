@@ -14,7 +14,7 @@ const Form: React.FC<IFormProps> = React.memo(
     cardCvvRef,
     onCardInputFocus,
     onCardInputBlur,
-    code,
+    cardConfig,
     children
   }) => {
     const [state, setState] = React.useState({
@@ -28,7 +28,7 @@ const Form: React.FC<IFormProps> = React.memo(
       }),
       yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
     });
-    const [prevStated, setPrevState] = React.useState(state);
+    const [prevState, setPrevState] = React.useState(state);
 
     const updateMainState = React.useCallback(
       (name: string, value: string | boolean) => {
@@ -44,10 +44,10 @@ const Form: React.FC<IFormProps> = React.memo(
       (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
 
-        setState(prevState => {
-          setPrevState(prevState);
+        setState(prev => {
+          setPrevState(prev);
 
-          return { ...prevState, [name]: value };
+          return { ...prev, [name]: value };
         });
         updateMainState(name, value);
       },
@@ -57,16 +57,16 @@ const Form: React.FC<IFormProps> = React.memo(
     const onCardNumberChange = React.useCallback(
       (event: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
-        const cardNumber = NumberCardTest(value, code);
+        const cardNumber = NumberCardTest(value, cardConfig);
 
-        setState(prevState => {
-          setPrevState(prevState);
+        setState(prev => {
+          setPrevState(prev);
 
-          return { ...prevState, [name]: cardNumber.trimRight() };
+          return { ...prev, [name]: cardNumber.trimRight() };
         });
         updateMainState(name, cardNumber);
       },
-      [updateMainState, code]
+      [updateMainState, cardConfig]
     );
 
     const onCvvFocus = React.useCallback(() => {
@@ -108,31 +108,28 @@ const Form: React.FC<IFormProps> = React.memo(
     React.useEffect(() => {
       const node = cardNumberRef.current;
       const { cardNumber: cardNum } = state;
-      const { cardNumber: prevCardNum } = prevStated;
+      const { cardNumber: prevCardNum } = prevState;
       if (cardNum.length > prevCardNum.length) {
-        setState(prevState => {
-          setPrevState(prevState);
+        setState(prev => {
+          setPrevState(prev);
 
-          return { ...prevState, cursorIdx: prevState.cursorIdx + 1 };
+          return { ...prev, cursorIdx: prevState.cursorIdx + 1 };
         });
       } else if (prevCardNum[state.cursorIdx - 1] === " ") {
-        setState(prevState => {
-          setPrevState(prevState);
+        setState(prev => {
+          setPrevState(prev);
 
-          return { ...prevState, cursorIdx: prevState.cursorIdx + 1 };
+          return { ...prev, cursorIdx: prevState.cursorIdx + 1 };
         });
       }
 
       node.selectionStart = node.selectionEnd = state.cursorIdx;
-    }, [state, prevStated, cardNumberRef]);
+    }, [state, prevState, cardNumberRef]);
 
-    const maxLengthInput = React.useMemo(() => {
-      if (code.type === "american-express" || code.type === "diners-club") {
-        return 18;
-      }
-
-      return 19;
-    }, [code.type]);
+    const maxLengthInput = React.useMemo(
+      () => (cardConfig.maxLength ? cardConfig.maxLength : 19),
+      [cardConfig.maxLength]
+    );
 
     return (
       <FormWrapper>
@@ -220,12 +217,12 @@ const Form: React.FC<IFormProps> = React.memo(
             <div className="card-form__col -cvv">
               <div className="card-input">
                 <label htmlFor="cardCvv" className="card-input__label">
-                  {code.name}
+                  {cardConfig.name}
                 </label>
                 <input
                   type="tel"
                   className="card-input__input"
-                  maxLength={code.size}
+                  maxLength={cardConfig.size}
                   autoComplete="off"
                   name="cardCvv"
                   onChange={handleFormChange}
