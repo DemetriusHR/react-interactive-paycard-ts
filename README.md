@@ -6,7 +6,14 @@ I also wrote a copy of the script in [CodeSandBox][https://codesandbox.io/s/reac
 
 ![](demo.gif)
 
-## Available Scripts
+## 📚 Librarys useds
+
+- [`create-react-app with typescript`](https://create-react-app.dev/docs/adding-typescript/)
+- [`react-transition-group`](https://github.com/reactjs/react-transition-group#readme)
+- [`styled-components`](https://github.com/styled-components/styled-components#docs)
+- [`credit-card-type`](https://github.com/braintree/credit-card-type#credit-card-type---)
+
+## 📟 Available Scripts
 
 In the project directory, you can run:
 
